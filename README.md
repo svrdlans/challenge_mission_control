@@ -7,6 +7,10 @@ To start your Phoenix server:
 
 Now you can visit [`localhost:4000`](http://localhost:4000) from your browser.
 
+## Flight Path
+
+To use the flight path calculator, navigate to [`localhost:4000/flight_path`](http://localhost:4000/flight_path) from your browser.
+
 Ready to run in production? Please [check our deployment guides](https://hexdocs.pm/phoenix/deployment.html).
 
 ## Learn more
