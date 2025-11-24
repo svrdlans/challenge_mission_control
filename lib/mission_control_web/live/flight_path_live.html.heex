@@ -34,7 +34,7 @@
               <div class="flex-1">
                 <select
                   name="action"
-                  id="action"
+                  id="action-select"
                   class="w-full min-w-30 rounded-lg border-2 border-blue-300/30 bg-white/5 px-4 py-3 text-white transition-all focus:border-blue-400 focus:outline-none focus:ring-2 focus:ring-blue-400/50"
                 >
                   {Phoenix.HTML.Form.options_for_select(
@@ -47,7 +47,7 @@
               <div class="flex-1">
                 <select
                   name="planet"
-                  id="planet"
+                  id="planet-select"
                   class="w-full min-w-30 rounded-lg border-2 border-blue-300/30 bg-white/5 px-4 py-3 text-white transition-all focus:border-blue-400 focus:outline-none focus:ring-2 focus:ring-blue-400/50"
                 >
                   {Phoenix.HTML.Form.options_for_select(
@@ -61,6 +61,7 @@
 
           <button
             type="button"
+            id="add-to-flight-path"
             phx-click="add_to_flight_path"
             class={[
               "rounded-lg bg-blue-500 px-4 py-2 text-sm font-medium text-white transition-all hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-400",
@@ -73,7 +74,11 @@
         </div>
       </div>
 
-      <div :if={@errors != []} class="rounded-lg bg-red-500/20 border-2 border-red-400/50 p-4">
+      <div
+        :if={@errors != []}
+        id="form-errors"
+        class="rounded-lg bg-red-500/20 border-2 border-red-400/50 p-4"
+      >
         <ul class="space-y-1">
           <li :for={error <- @errors} class="text-sm text-red-200">{error}</li>
         </ul>
@@ -81,11 +86,16 @@
 
       <div
         :if={@flight_path != []}
+        id="flight-path-list"
         class="w-full rounded-lg border-2 border-blue-300/30 bg-white/5 px-4 py-3 text-white transition-all focus:border-blue-400 focus:outline-none focus:ring-2 focus:ring-blue-400/50"
       >
         <label class="text-sm font-semibold text-blue-100">Flight Path</label>
         <ul class="flex flex-col">
-          <li :for={step <- @flight_path} class="flex items-center justify-between py-2">
+          <li
+            :for={step <- @flight_path}
+            id={"flight-step-#{step.id}"}
+            class="flex items-center justify-between py-2"
+          >
             <div class="flex min-w-50 rounded-lg border-1 border-gray-300/50 bg-green/5 items-center justify-between">
               <div class="flex-grow space-x-2 px-3 py-2">
                 <span class="items-center text-base">{to_label(step.action)}</span>
@@ -100,6 +110,7 @@
             <div class="w-full border-b border-gray-300/50"></div>
             <button
               type="button"
+              id="remove-from-flight-path"
               phx-click="remove_from_flight_path"
               phx-value-index={step.id}
               class="rounded-lg bg-red-500/20 border-1 border-red-400/50 px-4 py-2 text-red-300 transition-all hover:bg-red-500/50 focus:outline-none focus:ring-2 focus:ring-red-400"
@@ -111,6 +122,7 @@
       </div>
       <div
         :if={@total_fuel}
+        id="total-fuel"
         class="rounded-lg border-2 border-blue-400/50 p-6"
       >
         <div class="text-center">
