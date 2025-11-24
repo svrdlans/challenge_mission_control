@@ -18,6 +18,8 @@ defmodule MissionControlWeb.Router do
     pipe_through :browser
 
     get "/", PageController, :home
+
+    live "/flight_path", FlightPathLive
   end
 
   # Other scopes may use custom stacks.
