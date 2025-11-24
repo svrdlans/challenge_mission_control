@@ -42,7 +42,7 @@ defmodule MissionControlWeb.FlightPathLive do
       if mass && flight_path != [] do
         case FlightPaths.calculate_fuel_for_flight_path(flight_path, mass) do
           {:ok, total_fuel} -> {total_fuel, errors}
-          {:error, error} -> {nil, [error | errors]}
+          {:error, error} -> {nil, [parse_error(error) | errors]}
         end
       else
         {nil, errors}
@@ -127,6 +127,11 @@ defmodule MissionControlWeb.FlightPathLive do
     do: {:error, "Both action and planet must be selected"}
 
   def parse_step(action, planet), do: {:ok, new_step(action, planet)}
+
+  def parse_error(:invalid_equipment_mass), do: "Mass must be a number greater than 0"
+  def parse_error(:empty_flight_path), do: "Flight path must have at least one step"
+  def parse_error(:invalid_flight_path), do: "Flight path contains unexpected values"
+  def parse_error(other) when is_binary(other), do: other
 
   defp to_label(value) when is_atom(value) do
     value
