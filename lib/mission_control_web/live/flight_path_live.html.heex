@@ -110,7 +110,7 @@
             <div class="w-full border-b border-gray-300/50"></div>
             <button
               type="button"
-              id="remove-from-flight-path"
+              id={"remove-from-flight-path-#{step.id}"}
               phx-click="remove_from_flight_path"
               phx-value-index={step.id}
               class="rounded-lg bg-red-500/20 border-1 border-red-400/50 px-4 py-2 text-red-300 transition-all hover:bg-red-500/50 focus:outline-none focus:ring-2 focus:ring-red-400"
