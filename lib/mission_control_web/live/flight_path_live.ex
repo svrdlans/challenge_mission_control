@@ -1,18 +1,7 @@
 defmodule MissionControlWeb.FlightPathLive do
   use MissionControlWeb, :live_view
 
-  @action_options [
-    {"Action", ""},
-    {"Launch", "launch"},
-    {"Land", "land"}
-  ]
-
-  @planet_options [
-    {"Planet", ""},
-    {"Earth", "earth"},
-    {"Moon", "moon"},
-    {"Mars", "mars"}
-  ]
+  alias MissionControl.FlightPaths
 
   def mount(_params, _session, socket) do
     socket =
@@ -23,8 +12,8 @@ defmodule MissionControlWeb.FlightPathLive do
         total_fuel: nil,
         insert_disabled: true,
         errors: [],
-        action_options: @action_options,
-        planet_options: @planet_options
+        action_options: FlightPaths.action_input_options(),
+        planet_options: FlightPaths.planet_input_options()
       )
 
     {:ok, socket}
