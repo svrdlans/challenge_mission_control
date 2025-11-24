@@ -33,21 +33,36 @@ defmodule MissionControl.FlightPaths do
     * Must have at least one valid step
     * Each action must be a tuple of `{:launch | :land, planet}`
     * Planet must be one of `:earth`, `:moon`, or `:mars`
+
+    # Examples
+
+    iex> MissionControl.FlightPaths.validate_flight_path([])
+    {:error, :empty_flight_path}
+
+    iex> flight_path = [%{action: :launch, planet: :pluto}]
+    iex> MissionControl.FlightPaths.validate_flight_path(flight_path)
+    {:error, :invalid_flight_path}
+
+    iex> flight_path = [%{action: :cruise, planet: :moon}]
+    iex> MissionControl.FlightPaths.validate_flight_path(flight_path)
+    {:error, :invalid_flight_path}
+
+    iex> flight_path = [%{action: :launch, planet: :earth}]
+    iex> MissionControl.FlightPaths.validate_flight_path(flight_path)
+    :ok
+
+
   """
   def validate_flight_path([]), do: {:error, :empty_flight_path}
 
   def validate_flight_path(flight_path) when is_list(flight_path) do
-    valid? =
-      Enum.all?(flight_path, fn
-        %{action: action, planet: planet}
-        when action in @valid_actions and planet in @valid_planets ->
-          true
-
-        _ ->
-          false
-      end)
-
-    if valid?, do: :ok, else: {:error, :invalid_flight_path}
+    flight_path
+    |> Enum.all?(&(&1.action in @valid_actions and &1.planet in @valid_planets))
+    |> if do
+      :ok
+    else
+      {:error, :invalid_flight_path}
+    end
   end
 
   @doc """
@@ -56,6 +71,18 @@ defmodule MissionControl.FlightPaths do
   Returns:
     * `:ok` - when passed `equipment_mass` is integer greater than 0,
     * otherwise returns `{:error, :invalid_equipment_mass}`
+
+    # Examples
+
+    iex> MissionControl.FlightPaths.validate_equipment_mass(234)
+    :ok
+
+    iex> MissionControl.FlightPaths.validate_equipment_mass("446")
+    {:error, :invalid_equipment_mass}
+
+    iex> MissionControl.FlightPaths.validate_equipment_mass(:twenty)
+    {:error, :invalid_equipment_mass}
+
   """
   def validate_equipment_mass(equipment_mass)
       when is_integer(equipment_mass) and equipment_mass > 0,
@@ -71,6 +98,33 @@ defmodule MissionControl.FlightPaths do
     * `{:ok, total_fuel}` - for valid inputs
     * otherwise returns `{:error, :invalid_flight_path}` or `{:error,
       :invalid_equipment_mass}`
+
+    # Examples
+
+    iex> flight_path = [%{action: :launch, planet: :earth},
+    ...> %{action: :land, planet: :moon}, %{action: :launch, planet: :moon},
+    ...> %{action: :land, planet: :earth}]
+    iex> equipment_mass = 28801
+    iex> MissionControl.FlightPaths.calculate_fuel_for_flight_path(flight_path, equipment_mass)
+    {:ok, 51898}
+
+    iex> flight_path = [%{action: :cruise, planet: :mars}]
+    iex> MissionControl.FlightPaths.calculate_fuel_for_flight_path(flight_path, 3424)
+    {:error, :invalid_flight_path}
+
+    iex> flight_path = [%{action: :land, planet: :pluto}]
+    iex> MissionControl.FlightPaths.calculate_fuel_for_flight_path(flight_path, 3424)
+    {:error, :invalid_flight_path}
+
+
+    iex> flight_path = [%{action: :launch, planet: :earth}]
+    iex> MissionControl.FlightPaths.calculate_fuel_for_flight_path(flight_path, "234")
+    {:error, :invalid_equipment_mass}
+
+    iex> flight_path = [%{action: :launch, planet: :mars}]
+    iex> MissionControl.FlightPaths.calculate_fuel_for_flight_path(flight_path, :twenty)
+    {:error, :invalid_equipment_mass}
+
   """
   def calculate_fuel_for_flight_path(flight_path, equipment_mass) do
     with :ok <- validate_flight_path(flight_path),
