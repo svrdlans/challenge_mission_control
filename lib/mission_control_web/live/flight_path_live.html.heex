@@ -25,9 +25,9 @@
 
       <div>
         <div class="mb-4 flex items-center justify-between">
-          <label class="text-sm font-semibold text-blue-100">Select Steps</label>
+          <label class="text-sm font-semibold text-blue-100">Select For Flight Path</label>
 
-          <div class="flex space-y-3">
+          <div class="px-50 flex-1 grow space-y-3">
             <div class="flex gap-10">
               <div class="flex-1">
                 <select
@@ -66,7 +66,7 @@
             ]}
             disabled={@insert_disabled}
           >
-            + Add
+            <.icon name="hero-plus-circle" class="h-7 w-7" />
           </button>
         </div>
       </div>
@@ -77,27 +77,32 @@
         </ul>
       </div>
 
-      <div :if={@flight_path != []} class="w-full rounded-lg border-2 border-blue-300/30 bg-white/5 px-4 py-3 text-white transition-all focus:border-blue-400 focus:outline-none focus:ring-2 focus:ring-blue-400/50">
+      <div
+        :if={@flight_path != []}
+        class="w-full rounded-lg border-2 border-blue-300/30 bg-white/5 px-4 py-3 text-white transition-all focus:border-blue-400 focus:outline-none focus:ring-2 focus:ring-blue-400/50"
+      >
         <label class="text-sm font-semibold text-blue-100">Flight Path</label>
         <ul class="flex flex-col">
           <li :for={step <- @flight_path} class="flex items-center justify-between py-2">
             <div class="flex min-w-50 rounded-lg border-1 border-gray-300/50 bg-green/5 items-center justify-between">
-            <div class="flex-grow space-x-2 px-3 py-2">
-            <span class="items-center text-base">{to_label(step.action)}</span>
-            </div>
-            <span class="flex-grow py-3"><.icon name="hero-arrow-right" class="h-5 w-5" /></span>
-            <div>
-            <span class="text-base px-3 py-2">{to_label(step.planet)}</span>
-            </div>
+              <div class="flex-grow space-x-2 px-3 py-2">
+                <span class="items-center text-base">{to_label(step.action)}</span>
+              </div>
+              <span class="flex-grow py-3">
+                <.icon name="hero-arrow-right" class="h-5 w-5" />
+              </span>
+              <div>
+                <span class="text-base px-3 py-2">{to_label(step.planet)}</span>
+              </div>
             </div>
             <div class="w-full border-b border-gray-300/50"></div>
             <button
               type="button"
               phx-click="remove_from_flight_path"
               phx-value-index={step.id}
-              class="rounded-lg bg-red-500/20 border-1 border-red-400/50 px-4 text-red-300 transition-all hover:bg-red-500/50 focus:outline-none focus:ring-2 focus:ring-red-400"
+              class="rounded-lg bg-red-500/20 border-1 border-red-400/50 px-4 py-2 text-red-300 transition-all hover:bg-red-500/50 focus:outline-none focus:ring-2 focus:ring-red-400"
             >
-              <.icon name="hero-x-mark" class="h-5 w-5" />
+              <.icon name="hero-x-circle" class="h-7 w-7" />
             </button>
           </li>
         </ul>
@@ -107,9 +112,9 @@
         class="rounded-lg border-2 border-blue-400/50 p-6"
       >
         <div class="text-center">
-          <p class="mb-2 text-sm font-medium text-blue-200">Total Fuel Required</p>
-          <p class="text-4xl font-bold text-white">
-            {@total_fuel} <span class="text-5xl text-blue-200">kg</span>
+          <p class="mb-2 text-base font-medium text-blue-200">Total Fuel Required</p>
+          <p class="text-3xl font-bold text-white">
+            {@total_fuel} <span class="text-2xl text-blue-200">kg</span>
           </p>
         </div>
       </div>
