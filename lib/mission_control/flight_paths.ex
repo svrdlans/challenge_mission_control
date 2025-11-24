@@ -57,8 +57,9 @@ defmodule MissionControl.FlightPaths do
     * `:ok` - when passed `equipment_mass` is integer greater than 0,
     * otherwise returns `{:error, :invalid_equipment_mass}`
   """
-  def validate_equipment_mass(equipment_mass) when is_integer(equipment_mass) and equipment_mass > 0,
-    do: :ok
+  def validate_equipment_mass(equipment_mass)
+      when is_integer(equipment_mass) and equipment_mass > 0,
+      do: :ok
 
   def validate_equipment_mass(_), do: {:error, :invalid_equipment_mass}
 
