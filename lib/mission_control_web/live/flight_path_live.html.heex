@@ -18,6 +18,8 @@
           name="mass"
           value={@mass}
           placeholder="Enter mass in kg"
+          inputmode="numeric"
+          pattern="[0-9]*"
           class="w-full rounded-lg border-2 border-blue-300/30 bg-white/5 px-4 py-3 text-white placeholder-blue-300/50 transition-all focus:border-blue-400 focus:outline-none focus:ring-2 focus:ring-blue-400/50"
           phx-debounce="300"
         />
